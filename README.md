@@ -16,6 +16,7 @@ In the experiments of this work, we use the [Speech Commands dataset](https://st
 
 ## How to run the code?
 **1. Download the dataset and train the target model**
+
 Clone this Github reporsitory. Then run:
 ```python
 python src/speech_model_train/speech_commands/train.py --data_dir data/
@@ -24,12 +25,12 @@ This will automatically download the Speech Commands dataset to the ``data`` dir
 
 The default saved model can only infer one sample at a time. We recommend to modify it by using the provided ``src/speech_model_train/freeze_batch.py`` script to allow the saved model conduct batch inference. You need to: 
 1) Change line 86 of ``src/speech_model_train/freeze_batch.py``to your desired inference batch size (we use 50); 
-2) ``python src/speech_model_train/freeze_batch.py \
+2) Run ``python src/speech_model_train/freeze_batch.py \
 --start_checkpoint=/tmp/speech_commands_train/conv.ckpt-xxxx \
 --output_file=/tmp/my_frozen_graph.pb
 ``
 
-This will significantly speed up the next step of generating expert demostration samples. We include some pre-trained model with different (inference) batch size in ``src/speech_model_train/trained_models/``.
+This will significantly speed up the next step of generating expert demostration samples. We include some pre-trained model with different inference batch size in ``src/speech_model_train/trained_models/``.
 
 **2. Generate expert demonstration samples**
  As mentioned in the paper, we generate the expert demonstration samples using a non-real-time adversarial example generation method, specifically, we use an audio version of the ["one-pixel attack"](https://arxiv.org/abs/1710.08864) (Jiawei Su, Vasconcellos Vargas, Sakurai Kouichi). 
