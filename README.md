@@ -30,7 +30,7 @@ The default saved model can only infer one sample at a time. We recommend to mod
 
 This will significantly speed up the next step of generating expert demostration samples. We include some pre-trained model with different inference batch size in ``src/speech_model_train/trained_models/``.
 
-**2. Generate expert demonstration samples**
+**2. Generate expert demonstration samples (i.e., non-real-time adversarial samples)**
 
  As mentioned in the paper, we generate the expert demonstration samples using a non-real-time adversarial example generation method, specifically, we use an audio version of the ["one-pixel attack"](https://arxiv.org/abs/1710.08864) (Jiawei Su, Vasconcellos Vargas, Sakurai Kouichi, IEEE Transactions on Evolutionary Computation, 2019). 
 
