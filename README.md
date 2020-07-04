@@ -25,15 +25,14 @@ This will automatically download the Speech Commands dataset to the ``data`` dir
 
 The default saved model can only infer one sample at a time. We recommend to modify it by using the provided ``src/speech_model_train/freeze_batch.py`` script to allow the saved model conduct batch inference. You need to: 
 1) Change line 86 of ``src/speech_model_train/freeze_batch.py``to your desired inference batch size (we use 50); 
-2) Run ``python src/speech_model_train/freeze_batch.py \
---start_checkpoint=/tmp/speech_commands_train/conv.ckpt-xxxx \
---output_file=/tmp/my_frozen_graph.pb
+2) Run ``python src/speech_model_train/freeze_batch.py --start_checkpoint=/tmp/speech_commands_train/conv.ckpt-xxxx --output_file=/tmp/my_frozen_graph.pb
 ``
 
 This will significantly speed up the next step of generating expert demostration samples. We include some pre-trained model with different inference batch size in ``src/speech_model_train/trained_models/``.
 
 **2. Generate expert demonstration samples**
- As mentioned in the paper, we generate the expert demonstration samples using a non-real-time adversarial example generation method, specifically, we use an audio version of the ["one-pixel attack"](https://arxiv.org/abs/1710.08864) (Jiawei Su, Vasconcellos Vargas, Sakurai Kouichi). 
+
+ As mentioned in the paper, we generate the expert demonstration samples using a non-real-time adversarial example generation method, specifically, we use an audio version of the ["one-pixel attack"](https://arxiv.org/abs/1710.08864) (Jiawei Su, Vasconcellos Vargas, Sakurai Kouichi, IEEE Transactions on Evolutionary Computation, 2019). 
 
 The implementation of this is in ``src/generate_expert_demo.py``.  In line 242, the number of perturbed "pixels" (in the audio context, the number of purturbed segments) is defined, in this work, we use 5. In line 268, one sample is feeded to the attack model, where ``generate_perturbation_fix_scale`` is the key function, in which ``attack_fix_scale`` is the key function, in which ``differential_evolution `` is the key function. For ``differential_evolution ``, two important parameters are ``maxiter`` and ``popsize``. Higher values for both do lead to better attack performance, but also increase the computation overhead, in this work, we use 5 and 10, respectively (note here there is a typo in the paper that we said the maxiter is 75). 
 
