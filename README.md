@@ -8,11 +8,11 @@ If you feel this repository is helpful, please cite the following paper:
 Yuan Gong, Boyang Li, Christian Poellabauer, and Yiyu Shi, **["Real-time Adversarial Attacks"](https://www.ijcai.org/Proceedings/2019/649)**, Proceedings of the 28th International Joint Conference on Artificial Intelligence (IJCAI), Macao, China, August 2019.
 
 ## Dependencies
-Tensorflow 
+Tensorflow 1.0
 
 ## Dataset
 
-In the experiments of this work, we use the [Speech Commands dataset](https://storage.cloud.google.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz) (2.3GB), which is publically accessible. You don't need to download it if you want to train the target model from scratch.
+In the experiments of this work, we use the [Speech Commands dataset](https://storage.cloud.google.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz) (2.3GB), which is publically accessible. You don't need to download it if you want to train the target model from scratch because the training code will automatically download it.
 
 ## How to run the code?
 **1. Download the dataset and train the target model**
@@ -47,9 +47,11 @@ Please note that since we needs to generate more than 10,000 samples, each invol
 
 **3. Learn from the demonstration samples**
 
+The ``src/train_attack.py`` train the real-time attack model using the original.csv, perturbation.csv, and label_info.csv files genereated from the previous step. The model architecture is in ``src/rnn_model.py``.  Change the file path in line 194-196 of ``src/train_attack.py`` to your path, and run: ``python src/train_attack.py``.  The attack model and the predicted perturbation on the test set are stored after training.
 
 **4. Analyze the attack result**
 
+Note that the predicted perturbation time of the attack model is NOT the actual perturbation time because the model may decide a start time that is earlier than the decision time, which is not possible to realize in the real-time setting. Therefore, we use a simple strategy that if the prediction time is earlier than the decision time, then immediately inject the perturbation. This is implemented in ``src/inject_attack.py``.
 
 ## Questions
 
